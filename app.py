@@ -5,7 +5,7 @@ import random
 
 app = Flask(__name__)
 
-# ✅ 문제 리스트 (다양한 출력 예측 문제)
+# ✅ 문제 리스트
 questions = [
     {
         'id': 1,
@@ -59,34 +59,37 @@ questions = [
     }
 ]
 
-# ✅ 현재 출제된 문제를 기억하기 위한 변수
+# ✅ 현재 문제를 저장
 current_question = {'code': '', 'expected_output': ''}
 
 @app.route('/')
 def index():
-    # 문제 무작위 선택
     question = random.choice(questions)
     current_question['code'] = question['code']
     current_question['expected_output'] = question['expected_output']
     return render_template('index.html', code=question['code'])
 
+@app.route('/new-question', methods=['GET'])
+def new_question():
+    question = random.choice(questions)
+    current_question['code'] = question['code']
+    current_question['expected_output'] = question['expected_output']
+    return jsonify({'code': question['code']})
+
 @app.route('/check', methods=['POST'])
 def check():
     user_answer = request.json.get('answer', '').strip()
-
-    # 문제 코드 가져와서 실행
     code = current_question['code']
 
     output_buffer = io.StringIO()
     with contextlib.redirect_stdout(output_buffer):
         try:
-            exec(code, {})  # 보안상 제한된 환경에서만 사용할 것
+            exec(code, {})  # 보안상 실제 배포 시 제한 필요
         except Exception as e:
             actual_output = f'Error: {e}'
         else:
             actual_output = output_buffer.getvalue().strip()
 
-    # 정답 비교
     is_correct = user_answer == actual_output
 
     return jsonify({

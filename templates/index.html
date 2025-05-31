@@ -9,20 +9,25 @@
     <div class="container">
         <h1>야 너두 파이썬?</h1>
 
-        <!-- 문제 라벨 분리 -->
+        <!-- 문제 라벨 -->
         <label class="code-label">문제 :</label>
+
+        <!-- 파이썬 코드 박스 -->
         <div class="question-box">
             <pre id="code">{{ code }}</pre>
         </div>
 
-        <!-- 예상 출력 -->
+        <!-- 예상 출력 입력 -->
         <div class="answer-box">
             <label for="user-answer">예상 출력 :</label>
             <textarea id="user-answer" rows="3" placeholder="여기에 출력 결과를 입력하세요"></textarea>
         </div>
 
+        <!-- 버튼 영역 -->
         <button id="submit-btn">제출하기</button>
+        <button id="next-btn">다음 문제</button>
 
+        <!-- 결과 출력 -->
         <div id="result" class="result-box"></div>
     </div>
 
